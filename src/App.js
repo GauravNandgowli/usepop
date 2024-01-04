@@ -11,6 +11,8 @@ import MovieList from "./Main/MovieList";
 import MovieSummary from "./Main/MovieSummary";
 import Loading from "./Handler/Loading";
 import FetchError from "./Handler/FetchError";
+import SelectedMovie from "./Handler/SelectedMovie";
+
 import { useEffect } from "react";
 
 export default function App() {
@@ -19,7 +21,7 @@ export default function App() {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("  ");
-  // const query = "black";
+  const [selectedId, SetId] = useState(null);
 
   useEffect(
     function () {
@@ -35,6 +37,7 @@ export default function App() {
             throw new Error("Error");
           }
           setMovies(data.Search);
+          console.log(data.Search);
         } catch (error) {
           setError(error);
         } finally {
@@ -60,12 +63,20 @@ export default function App() {
       <Main>
         <Box1>
           {isLoading && <Loading></Loading>}
-          {!isLoading && !error && <List movies={movies}></List>}
+          {!isLoading && !error && (
+            <List movies={movies} selectedId={selectedId} SetId={SetId}></List>
+          )}
           {error && <FetchError></FetchError>}
         </Box1>
         <Box2>
-          <MovieSummary watched={watched}></MovieSummary>
-          <MovieList watched={watched}></MovieList>
+          {selectedId ? (
+            <SelectedMovie SelectedMovieId={selectedId}></SelectedMovie>
+          ) : (
+            <>
+              <MovieSummary watched={watched}></MovieSummary>
+              <MovieList watched={watched}></MovieList>
+            </>
+          )}
         </Box2>
       </Main>
     </>
