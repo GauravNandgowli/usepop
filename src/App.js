@@ -1,8 +1,6 @@
 import { useState } from "react";
 import tempWatchedData from "./tempWatchedData";
-import tempMovieData from "./tempMovieData";
 import Navbar from "./NavBar/Navbar";
-import Logo from "./NavBar/Logo";
 import Search from "./NavBar/Search";
 import NumResults from "./NavBar/NumResults";
 import Main from "./Main/Main";
@@ -20,40 +18,43 @@ export default function App() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const query = "black";
+  const [query, setQuery] = useState("  ");
+  // const query = "black";
 
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `http://www.omdbapi.com/?apikey=43158627&s=${query}`
-        );
-        const data = await response.json();
-
-        if (data.Response === "False") {
-          throw new Error("Error");
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setLoading(true);
+          setError("");
+          const response = await fetch(
+            `http://www.omdbapi.com/?apikey=43158627&s=${query}`
+          );
+          const data = await response.json();
+          if (data.Response === "False") {
+            throw new Error("Error");
+          }
+          setMovies(data.Search);
+        } catch (error) {
+          setError(error);
+        } finally {
+          setLoading(false);
         }
-
-        setMovies(data.Search);
-        data.Search.map((movie) => {
-          console.log(movie);
-        });
-      } catch (error) {
-        console.log(error);
-        setError(error);
-      } finally {
-        setLoading(false);
       }
-    }
-    fetchMovies();
-  }, []);
+      if (query.length < 2) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+      fetchMovies();
+    },
+    [query]
+  );
 
   return (
     <>
       <Navbar>
-        <Logo></Logo>
-        <Search></Search>
+        <Search query={query} setQuery={setQuery}></Search>
         <NumResults movies={movies}></NumResults>
       </Navbar>
       <Main>
@@ -61,9 +62,6 @@ export default function App() {
           {isLoading && <Loading></Loading>}
           {!isLoading && !error && <List movies={movies}></List>}
           {error && <FetchError></FetchError>}
-          {isLoading && console.log("Loading")}
-          {!isLoading && !error && console.log("Movie list")}
-          {error && console.log("Show error")}
         </Box1>
         <Box2>
           <MovieSummary watched={watched}></MovieSummary>
