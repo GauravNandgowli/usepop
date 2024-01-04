@@ -1,5 +1,3 @@
-import React from "react";
-
 function List({ movies }) {
   return (
     <ul className="list">

@@ -2,13 +2,13 @@ import { useState } from "react";
 import tempWatchedData from "./tempWatchedData";
 import tempMovieData from "./tempMovieData";
 import Navbar from "./NavBar/Navbar";
+import Logo from "./NavBar/Logo";
 import Search from "./NavBar/Search";
 import NumResults from "./NavBar/NumResults";
-import Logo from "./NavBar/Logo";
 import Main from "./Main/Main";
 import Box1 from "./Main/Box1";
-import List from "./Main/List";
 import Box2 from "./Main/Box2";
+import List from "./Main/List";
 import MovieList from "./Main/MovieList";
 import MovieSummary from "./Main/MovieSummary";
 

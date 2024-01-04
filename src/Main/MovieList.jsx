@@ -1,5 +1,3 @@
-import React from "react";
-
 function MovieList({ watched }) {
   return (
     <ul className="list">
