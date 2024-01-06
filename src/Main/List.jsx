@@ -1,12 +1,10 @@
-import { useState } from "react";
-
 function List({ movies, selectedId, SetId }) {
   function handleSelectedMovie(id) {
     SetId((selectedId) => (id === selectedId ? null : id));
   }
 
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
         <li
           key={movie.imdbID}

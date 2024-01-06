@@ -17,7 +17,7 @@ import { useEffect } from "react";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("  ");
@@ -37,7 +37,6 @@ export default function App() {
             throw new Error("Error");
           }
           setMovies(data.Search);
-          console.log(data.Search);
         } catch (error) {
           setError(error);
         } finally {
@@ -70,7 +69,12 @@ export default function App() {
         </Box1>
         <Box2>
           {selectedId ? (
-            <SelectedMovie SelectedMovieId={selectedId}></SelectedMovie>
+            <SelectedMovie
+              SelectedMovieId={selectedId}
+              watched={watched}
+              setWatched={setWatched}
+              SetId={SetId}
+            ></SelectedMovie>
           ) : (
             <>
               <MovieSummary watched={watched}></MovieSummary>
